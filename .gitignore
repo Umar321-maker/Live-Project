@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pkl
+*.egg-info/
+.env
+mlruns/
+data/raw/
+data/processed/
+models/
+shap_outputs/
+.ipynb_checkpoints/
+*.log

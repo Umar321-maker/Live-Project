@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f5f0">
+    <meta name="description" content="An interactive telecom customer churn and retention analytics demo.">
+    <title>StaySignal | Retention intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="#overview" aria-label="StaySignal home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span>staysignal<span class="brand-period">.</span></span>
+        </a>
+
+        <div class="workspace-label">WORKSPACE</div>
+        <button class="workspace-switcher" type="button">
+          <span class="workspace-avatar">N</span>
+          <span class="workspace-copy"><strong>Northstar Telecom</strong><small>Customer success</small></span>
+          <span class="switcher-chevron" aria-hidden="true">⌄</span>
+        </button>
+
+        <div class="nav-label">ANALYZE</div>
+        <nav class="nav-list">
+          <a class="nav-item is-active" href="#overview"><span class="nav-icon" aria-hidden="true">◫</span>Overview</a>
+          <a class="nav-item" href="#customers"><span class="nav-icon" aria-hidden="true">◎</span>Customer risk<span class="nav-count" id="nav-risk-count">12</span></a>
+          <a class="nav-item" href="#trend"><span class="nav-icon" aria-hidden="true">⌁</span>Churn trends</a>
+          <a class="nav-item" href="#method"><span class="nav-icon" aria-hidden="true">◷</span>Model notes</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="sidebar-note"><span class="live-dot"></span><span>Demo environment<br><strong>Sample customer data</strong></span></div>
+          <a class="profile-link" href="#method"><span class="profile-avatar">JD</span><span><strong>Jordan Davis</strong><small>Retention lead</small></span><span class="profile-menu" aria-hidden="true">···</span></a>
+        </div>
+      </aside>
+
+      <main class="main-content" id="overview">
+        <header class="topbar">
+          <div class="breadcrumbs"><span>Northstar Telecom</span><span class="crumb-separator">/</span><strong>Overview</strong></div>
+          <div class="topbar-actions">
+            <span class="date-label"><span class="calendar-icon" aria-hidden="true">▦</span> Reporting period <strong>Last 30 days</strong></span>
+            <button class="icon-button" id="export-button" type="button" title="Export customer list as CSV" aria-label="Export customer list as CSV"><span aria-hidden="true">⇩</span></button>
+            <button class="primary-button" id="open-score-button" type="button"><span aria-hidden="true">＋</span> Score a customer</button>
+          </div>
+        </header>
+
+        <section class="page-intro">
+          <div>
+            <div class="eyebrow"><span class="live-dot"></span> RETENTION INTELLIGENCE <span class="eyebrow-divider">/</span> PORTFOLIO VIEW</div>
+            <h1>Keep the good ones.</h1>
+            <p>A clearer picture of who might leave, and where your team can make a difference.</p>
+          </div>
+          <div class="data-stamp"><span class="stamp-mark">NS</span><span>TELECOM PORTFOLIO<br><strong>Updated just now</strong></span></div>
+        </section>
+
+        <section class="metric-grid" aria-label="Portfolio summary">
+          <article class="metric-card metric-total">
+            <div class="metric-head"><span>Customers analyzed</span><span class="metric-symbol" aria-hidden="true">◎</span></div>
+            <div class="metric-value">7,043</div>
+            <div class="metric-foot"><span class="metric-note">Active customer profiles</span><span class="metric-tag">TELCO DATASET</span></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-head"><span>At-risk customers</span><span class="metric-symbol risk-symbol" aria-hidden="true">↗</span></div>
+            <div class="metric-value" id="metric-risk">1,246</div>
+            <div class="metric-foot"><span class="trend-down">↓ 3.2%</span><span class="metric-note">vs. previous period</span></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-head"><span>Revenue at risk</span><span class="metric-symbol revenue-symbol" aria-hidden="true">$</span></div>
+            <div class="metric-value">$84.2<span class="metric-unit">k</span></div>
+            <div class="metric-foot"><span class="metric-note">Est. monthly recurring revenue</span></div>
+          </article>
+          <article class="metric-card metric-save">
+            <div class="metric-head"><span>Save opportunity</span><span class="metric-symbol save-symbol" aria-hidden="true">✳</span></div>
+            <div class="metric-value">$31.6<span class="metric-unit">k</span></div>
+            <div class="metric-foot"><span class="metric-note">Based on 38% save rate</span><span class="save-sparkline" aria-label="Increasing save opportunity trend">▁▂▂▃▃▄▅▆</span></div>
+          </article>
+        </section>
+
+        <section class="analysis-grid" id="trend">
+          <article class="panel trend-panel">
+            <div class="panel-heading">
+              <div><div class="section-kicker">THE BIG PICTURE</div><h2>Churn is easing.</h2><p class="panel-subtitle">Monthly churn rate across your customer base</p></div>
+              <label class="select-wrap"><span class="sr-only">Chart period</span><select id="chart-period"><option value="12">Last 12 months</option><option value="6">Last 6 months</option></select></label>
+            </div>
+            <div class="chart-legend"><span><i class="legend-dot legend-churn"></i>Churn rate</span><span><i class="legend-dash"></i>Portfolio average <strong>26.5%</strong></span></div>
+            <div class="chart-wrap"><canvas id="churn-chart" role="img" aria-label="Line chart showing monthly churn rate trending down from 28.4 percent to 24.9 percent"></canvas></div>
+            <div class="chart-foot"><span>JAN <span class="chart-year">2025</span></span><span>Customer churn rate</span><span>DEC <span class="chart-year">2025</span></span></div>
+          </article>
+
+          <article class="panel segments-panel">
+            <div class="section-kicker">WHERE TO LOOK</div>
+            <h2>Risk by contract.</h2>
+            <p class="panel-subtitle">Month-to-month customers churn most often.</p>
+            <div class="segment-list" aria-label="Churn rate by contract type">
+              <div class="segment-row"><div class="segment-label"><span>Month-to-month</span><strong>42.7%</strong></div><div class="segment-track"><span class="segment-fill fill-high" style="width:85.4%"></span></div><div class="segment-meta"><span>3,875 customers</span><span class="risk-word">HIGH RISK</span></div></div>
+              <div class="segment-row"><div class="segment-label"><span>One year</span><strong>11.3%</strong></div><div class="segment-track"><span class="segment-fill fill-mid" style="width:22.6%"></span></div><div class="segment-meta"><span>1,473 customers</span><span>MODERATE</span></div></div>
+              <div class="segment-row"><div class="segment-label"><span>Two year</span><strong>2.8%</strong></div><div class="segment-track"><span class="segment-fill fill-low" style="width:5.6%"></span></div><div class="segment-meta"><span>1,695 customers</span><span>LOW RISK</span></div></div>
+            </div>
+            <div class="insight-note"><span class="insight-icon" aria-hidden="true">↗</span><span><strong>3.6× more likely to churn</strong><br>Month-to-month vs. annual contracts</span></div>
+          </article>
+        </section>
+
+        <section class="customer-section" id="customers">
+          <div class="customer-heading">
+            <div><div class="section-kicker">YOUR NEXT BEST ACTION</div><h2>Customers to watch <span class="table-count" id="table-count">12</span></h2></div>
+            <div class="table-tools">
+              <label class="search-box"><span aria-hidden="true">⌕</span><input id="customer-search" type="search" placeholder="Find a customer" aria-label="Find a customer"></label>
+              <label class="select-wrap filter-select"><span class="sr-only">Filter customers by risk</span><select id="risk-filter"><option value="all">All risk levels</option><option value="High">High risk</option><option value="Medium">Medium risk</option><option value="Low">Low risk</option></select></label>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th scope="col">CUSTOMER</th><th scope="col">CONTRACT</th><th scope="col">TENURE</th><th scope="col">MONTHLY SPEND</th><th scope="col">CHURN RISK</th><th scope="col">REVENUE</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
+              <tbody id="customer-rows"></tbody>
+            </table>
+            <div class="empty-state" id="empty-state" hidden>No customers match that search.</div>
+          </div>
+          <div class="table-footer"><span>Showing <strong id="visible-count">12</strong> sample profiles from the Telco Customer Churn dataset</span><a href="https://github.com/blastchar/telco-customer-churn" target="_blank" rel="noreferrer">Dataset source <span aria-hidden="true">↗</span></a></div>
+        </section>
+
+        <footer class="page-footer" id="method"><span><span class="footer-dot"></span> DEMO MODE <span class="footer-separator">·</span> Illustrative KPIs and scores; 12 sample profiles</span><span>Dataset: <a href="https://github.com/blastchar/telco-customer-churn" target="_blank" rel="noreferrer">blastchar/telco-customer-churn</a></span></footer>
+      </main>
+    </div>
+
+    <dialog class="score-dialog" id="score-dialog" aria-labelledby="dialog-title">
+      <form id="score-form" method="dialog">
+        <div class="dialog-topline"><span class="section-kicker">QUICK RISK CHECK</span><button class="close-button" type="button" data-close-dialog aria-label="Close">×</button></div>
+        <h2 id="dialog-title">Score a customer.</h2>
+        <p class="dialog-intro">Adjust a few account details to see an illustrative churn-risk estimate.</p>
+        <div class="form-grid">
+          <label class="form-field form-wide">Contract type<select name="contract"><option value="month">Month-to-month</option><option value="one">One year</option><option value="two">Two year</option></select></label>
+          <label class="form-field">Tenure <span class="input-with-suffix"><input name="tenure" type="number" min="0" max="72" value="8" required><span>months</span></span></label>
+          <label class="form-field">Monthly charges <span class="input-with-prefix"><span>$</span><input name="charges" type="number" min="18" max="120" value="84.5" step="0.5" required></span></label>
+          <label class="form-field form-wide">Internet service<select name="internet"><option value="fiber">Fiber optic</option><option value="dsl">DSL</option><option value="none">No internet service</option></select></label>
+          <label class="check-field"><input name="support" type="checkbox"><span class="custom-check"></span> Has tech support</label>
+          <label class="check-field"><input name="paperless" type="checkbox" checked><span class="custom-check"></span> Paperless billing</label>
+        </div>
+        <button class="primary-button dialog-submit" type="submit">Calculate risk <span aria-hidden="true">↗</span></button>
+        <section class="score-result" id="score-result" aria-live="polite" hidden></section>
+        <p class="disclaimer">Illustrative demo logic only. Not a trained or validated predictive model.</p>
+      </form>
+    </dialog>
+
+    <dialog class="detail-dialog" id="detail-dialog" aria-labelledby="detail-name">
+      <div class="detail-content" id="detail-content"></div>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
