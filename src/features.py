@@ -34,10 +34,11 @@ def load_and_clean(path: str = RAW_PATH) -> pd.DataFrame:
     df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
     df["TotalCharges"].fillna(0, inplace=True)
 
-    # Collapse "No internet service" → "No"
+    # Collapse "No internet service" / "No phone service" → "No"
     df[INTERNET_SERVICE_COLS] = df[INTERNET_SERVICE_COLS].replace(
         "No internet service", "No"
     )
+    df["MultipleLines"] = df["MultipleLines"].replace("No phone service", "No")
 
     # Target encoding
     df["Churn"] = (df["Churn"] == "Yes").astype(int)

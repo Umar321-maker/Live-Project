@@ -1,9 +1,10 @@
 # Business Requirements Document (BRD)
 ## Telco Customer Churn Prediction
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** 2026-03-10  
 **Stakeholder:** CFO, Regional Telecom  
+**Dataset:** WA_Fn-UseC_-Telco-Customer-Churn.csv (IBM Cognos Analytics sample, CC BY-SA 4.0)  
 
 ---
 
@@ -67,13 +68,32 @@ The model's value is demonstrated when `ROI_targeted > ROI_blanket`.
 
 ## 6. Data Source
 
-- **Dataset:** Telco Customer Churn (blastchar/telco-customer-churn, Kaggle)
-- **Size:** 7,043 rows × 21 columns
+- **Dataset:** Telco Customer Churn — IBM Cognos Analytics sample (via Kaggle: blastchar/telco-customer-churn)
+- **License:** CC BY-SA 4.0
+- **Size:** 7,043 rows × 21 columns (~955 KB CSV)
+- **Geography:** Fictional telco, customers in California
 - **Target:** `Churn` (Yes/No → 1/0)
-- **Known Issues:**
-  - `TotalCharges` contains blank strings (not NaN) — requires manual coercion to float
-  - Class imbalance: ~26.6% churn
-  - Several features encode "No internet service" as a pseudo-category that should be collapsed to "No"
+- **Class balance:** 26.5% churn (1,869 churners / 5,174 retained)
+
+### Column Groups
+| Group | Columns |
+|-------|---------|
+| Identifier | customerID |
+| Demographics | gender, SeniorCitizen, Partner, Dependents |
+| Account | tenure, Contract, PaperlessBilling, PaymentMethod, MonthlyCharges, TotalCharges |
+| Services | PhoneService, MultipleLines, InternetService, OnlineSecurity, OnlineBackup, DeviceProtection, TechSupport, StreamingTV, StreamingMovies |
+| Target | Churn |
+
+### Known Data Quirks
+- `TotalCharges` stored as object dtype — 11 blank-string rows (tenure=0) require `pd.to_numeric(errors='coerce')`
+- Six service columns use `"No internet service"` / `"No phone service"` as a pseudo-category — collapse to `"No"` before modeling
+- No true missing values otherwise (unusually clean for production data)
+
+### Known Benchmark Findings
+- Month-to-month contracts: **35.5% churn rate** — 8× higher than two-year contracts (4.27%); `Contract` is the single strongest predictor
+- Average tenure: **36.9 months** (range 1–72); average monthly charges: **$69.85**
+- Fiber optic customers churn more than DSL; no-internet customers churn least — counter-intuitive, worth discussing
+- Electronic check payment + absence of TechSupport/OnlineSecurity are consistently top SHAP drivers
 
 ---
 
