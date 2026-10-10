@@ -1,4 +1,4 @@
-# Telco Customer Churn — DS Project
+# Live-project | Telco Customer Churn — DS Project
 
 > **Business Question:** Which customers will churn next quarter, why, and what is the ROI of targeted retention vs. blanket discounts?
 
